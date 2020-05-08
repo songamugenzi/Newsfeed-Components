@@ -102,12 +102,110 @@ const data = [
   Hint: You will need to use createElement more than once here!
 
   Your function should take either an object as its one argument, or 5 separate arguments mapping to each piece of the data object above.
-
-  Step 2: Add an event listener to the expandButton span. This listener should toggle the class 'article-open' on the 'article' div.
-
-  Step 3: Don't forget to return something from your function!
-
-  Step 4: Outside your function, loop over the data. At each iteration you'll use your component to create an article and append it to the DOM inside the 'articles' div.
-
-  Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new article.
 */
+
+
+function articleMaker(articleAttrs) {
+  const { title, date, firstParagraph, secondParagraph, thirdParagraph } = articleAttrs;
+  // creating DOM elements
+  const article = document.createElement('div');
+  const articleTitle = document.createElement('h2');
+  const articleDate = document.createElement('p');
+  const allArticleParagraphs = document.createElement('div');
+  const articleParagraphOne = document.createElement('p');
+  const articleParagraphTwo = document.createElement('p');
+  const articleParagraphThree = document.createElement('p');
+  const button = document.createElement('span');
+
+
+  // adding classes
+  article.classList.add('article');
+  articleTitle.classList.add('article-title');
+  articleDate.classList.add('article-date');
+  allArticleParagraphs.classList.add('articles-container');
+  articleParagraphOne.classList.add('article-paragraph');
+  articleParagraphTwo.classList.add('article-paragraph');
+  articleParagraphThree.classList.add('article-paragraph');
+  button.classList.add('expand-btn');
+  article.style.height = '50%'
+  allArticleParagraphs.style.height = '54%'
+  article.style.overflowY = 'hidden'
+  button.style.display = 'block'
+
+
+  // Adding content to DOM elements
+  articleTitle.textContent = title;
+  articleDate.textContent = date;
+  articleParagraphOne.textContent = firstParagraph;
+  articleParagraphTwo.textContent = secondParagraph;
+  articleParagraphThree.textContent = thirdParagraph;
+  button.textContent = 'Expand';
+  allArticleParagraphs.appendChild(articleParagraphOne);
+
+  // Appending elements to DOM
+  article.appendChild(articleTitle);
+  article.appendChild(articleDate);
+  article.appendChild(allArticleParagraphs);
+
+  allArticleParagraphs.appendChild(articleParagraphTwo);
+  allArticleParagraphs.appendChild(articleParagraphThree);
+  article.appendChild(button);
+
+
+
+
+  // Step 2: Add an event listener to the expandButton span. This listener should toggle the class 'article-open' on the 'article' div.
+
+  // button.addEventListener('click', event => {
+  //   article.classList.toggle('article-open');
+  // });
+
+  // Step 3: Don't forget to return something from your function! 
+  console.log(article)
+
+  return article
+}
+
+// Step 4: Outside your function, loop over the data. At each iteration you'll use your component to create an article and append it to the DOM inside the 'articles' div.
+
+const articles = document.querySelector('.articles');
+
+function articleFactory(data) {
+
+  const articleHTML = data.map(article => {
+    return articles.innerHTML += `<div class="article">
+    <h2>${article.title}</h2>
+    <p class="date">${article.date}</p>
+    <p>${article.firstParagraph}</p>
+    <p>${article.secondParagraph}</p>
+    <p>${article.thirdParagraph}</p>
+    <span class="expandButton">Expand</span>
+    </div>`
+  });
+
+  const expandButtons = Array.from(document.getElementsByTagName('span'))
+  expandButtons.forEach(element => {
+    element.addEventListener('click', event => {
+      let toggle = event.target.offsetParent
+      toggle.classList.toggle('article-open')
+      return
+    })
+  });
+  return articleHTML
+}
+
+
+
+// Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new article.
+
+const newArticle = {
+  title: "New Article",
+  date: "May 6th, 2020",
+  firstParagraph: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non minima dolores natus a repellendus vitae pariatur veniam neque, fugit nam!",
+  secondParagraph: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non minima dolores natus a repellendus vitae pariatur veniam neque, fugit nam!",
+  thirdParagraph: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non minima dolores natus a repellendus vitae pariatur veniam neque, fugit nam!"
+}
+
+data.push(newArticle)
+
+articleFactory(data)
